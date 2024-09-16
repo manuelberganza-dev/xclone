@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/main.css}" rel="stylesheet">
+    <link rel="shortcut icon" href="/x-logo_dark.svg" type="image/x-icon">  
+
+    <title>Editar Perfil</title>
+</head>
+<body class="bg-slate-950 text-white">
+
+    <main class="w-4/5 md:w-3/5 lg:w-2/5 mx-auto min-h-screen flex flex-col justify-center">
+        <div class="flex items-center mx-auto gap-3 mb-6">
+            <div class="w-10 md:w-14 flex flex-col items-center mx-auto">
+                <a href="/">
+                    <img th:src="@{/logos/x-logo.svg}" alt="Logo X">
+                    <p class="uppercase">clone</p>
+                </a>
+            </div>
+            <h2 class="text-2xl font-bold text-center">Actualiza los datos de tu perfil</h2>
+        </div>
+
+
+        <form th:object="${user}" th:action="@{/user/edit}" method="post" class="space-y-4" enctype="multipart/form-data" >
+            <div>
+                <label for="photo">Elige tu foto de perfil</label>
+                <input id="photo" name="archivePhoto" class="w-full" type="file">
+            </div>
+
+            <div>
+                <label for="name">Nombre</label>
+                <input id="name" name="name" class="w-full bg-transparent p-2 border border-gray-600 rounded" 
+                    type="text" th:field="*{name}" placeholder="Nombre">
+                <p class="text-red-600 mt-1" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+            </div>
+
+            <div>
+                <label for="lastname">Apellido</label>
+                <input id="lastname" name="lastname" class="w-full bg-transparent p-2 border border-gray-600 rounded" 
+                    type="text"
+                    placeholder="Apellido"
+                    th:field="*{lastname}">
+                    <p class="text-red-600 mt-1" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></p>
+            </div>
+
+            <input class="w-full cursor-pointer font-bold p-2 bg-blue-600 hover:bg-blue-700 rounded" 
+                type="submit" 
+                value="Actualizar datos">
+        </form>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/main.css}" rel="stylesheet">
+    <link rel="shortcut icon" href="/x-logo_dark.svg" type="image/x-icon">     
+
+    <title>XClone</title>
+</head>
+<body class="bg-slate-950 text-white">
+    <div> <!-- CONTAINER -->
+
+        <header th:insert="~{fragments/nav :: header}"></header>
+
+        <div class="h-28"></div> 
+
+        <main class="w-4/5 md:w-3/5 lg:w-2/5 mx-auto">
+            <p class="text-center text-2xl" th:if="${posts.size() == 0}">No hay todavia publicaciones</p>
+
+            <div th:unless="${posts.size() == 0}" 
+                th:each="post: ${posts}"
+                class="border border-gray-600/50 rounded p-4 shadow mb-6"> <!-- CARD -->
+                <nav class="mb-4 flex justify-between">
+
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full overflow-hidden mr-4">
+                            <img class="object-cover h-full w-full"
+                                th:src="${post.user.photo != null ? '/photos/' + post.user.photo : '/logos/profile-po.png'}"
+                                alt="Foto de perfil">
+                        </div>
+        
+                        <div>
+                            <p class="md:text-xl font-bold" th:text="${post.user.name} + ' ' + ${post.user.lastname}"></p>
+                            <h2 class="text-sm text-gray-300"
+                                th:text="'@'+${post.user.username}"></h2>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="text-xs md:text-sm text-gray-700" th:text="${#dates.format(post.createdAt, 'd MMM yyyy')}"></p>
+                    </div>
+                </nav>
+
+                <!-- CONTENT -->
+                <div class="mb-4">
+                    <p th:text="${post.content}"></p>
+                </div>
+
+                <!-- BUTTONS -->
+                <div class="flex justify-around">
+                    <a th:href="@{/comment/{id} (id=${post.id})}" class="p-1 flex flex-col items-center">
+                        <img class="w-6" th:src="@{/logos/comment.svg}" alt="comment icon">
+                        <p class="text-sm text-gray-400">comentarios</p>
+                    </a>
+
+                    <button 
+                        th:onclick="toggleLike([[${post.id}]])"
+                        class="p-1 flex flex-col items-center">
+                        <img class="w-6" 
+                            th:id="'likeIcon-' + ${post.id}"
+                            th:src="@{'/logos/heart-' + (${likedPosts[post.id]} ? 'solid' : 'outline') + '.svg'}"  
+                            alt="comment icon">
+                        <p class="text-sm text-gray-400">me gusta</p>
+                    </button>
+                </div>
+            </div>
+
+        </main>
+        
+        <a class="block fixed z-50 bottom-6 right-6 rounded-md bg-blue-600 p-2 shadow font-bold"
+            href="/post/form">
+            <div class="w-8">
+                <img class="w-full"
+                    id="likeImage"
+                    th:src="@{/logos/plus.svg}"
+                    alt="icono agregar">
+            </div>
+        </a>
+    </div>
+    
+
+    <script>
+        function toggleLike(postId) {
+            fetch(`/post/${postId}/like`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '[[@{${_csrf.token}}]]'
+                }
+            })
+            .then(response => response.json())
+            .then(like => {
+                const likeIcon = document.getElementById(`likeIcon-${postId}`);
+                likeIcon.src = like ? '/logos/heart-solid.svg' : '/logos/heart-outline.svg';
+            });
+        }
+
+    </script>
+</body>
+</html>

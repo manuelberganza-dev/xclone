@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/main.css}" rel="stylesheet">
+    <link rel="shortcut icon" href="/x-logo_dark.svg" type="image/x-icon">           
+
+    <title>Comentarios</title>
+</head>
+<body class="bg-slate-950 text-white">
+    <div> <!-- CONTAINER -->
+
+        <header th:insert="~{fragments/nav :: header}"></header>
+
+        <div class="h-28"></div> 
+
+        <main class="w-4/5 md:w-3/5 lg:w-2/5 mx-auto">
+            <div 
+                class="border border-gray-600/50 rounded p-4 shadow mb-10"> <!-- CARD -->
+                <nav class="mb-4 flex justify-between">
+
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img class="object-cover h-full w-full"
+                                th:src="${post.user.photo != null ? '/photos/' + post.user.photo : '/logos/profile-po.png'}"
+                                alt="Foto de perfil">
+                        </div>
+        
+                        <div>
+                            <p class="text-xl font-bold" th:text="${post.user.name} + ' ' + ${post.user.lastname}"></p>
+                            <h2 class="text-sm text-gray-300"
+                                th:text="'@'+${post.user.username}"></h2>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-gray-700" th:text="${#dates.format(post.createdAt, 'd MMM yyyy')}"></p>
+                    </div>
+                </nav>
+
+                <!-- CONTENT -->
+                <div class="mb-4">
+                    <p th:text="${post.content}"></p>
+                </div>
+            </div>
+
+            <!-- COMENTARIOS -->
+            <div class="w-4/5 mx-auto">
+                <form class="flex gap-3 mb-10" th:action="@{/comment/{id} (id=${post.id})}" method="post">
+                    <input class="w-full bg-transparent border-b border-gray-500 outline-none" 
+                        type="text" 
+                        placeholder="agrega un comentario..."
+                        name="content">
+                    
+                    <input class="bg-blue-500 hover:bg-blue-600 cursor-pointer p-2 rounded uppercase" type="submit" value="enviar">
+                </form>
+
+                <h2 class="text-center font-bold mb-10">COMENTARIOS</h2>
+
+                <!-- CARD -->
+                <div th:each="comment : ${comments}"
+                    class="border border-gray-600/50 rounded p-4 shadow mb-6"> 
+
+                    <nav class="mb-4 flex justify-between">
+
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                                <img class="object-cover h-full w-full"
+                                    th:src="${comment.user.photo != null ? '/photos/' + comment.user.photo : '/logos/profile-po.png'}"
+                                    alt="Foto de perfil">
+                            </div>
+            
+                            <div>
+                                <p class="text-xl font-bold" th:text="${post.user.name} + ' ' + ${post.user.lastname}"></p>
+                                <h2 class="text-sm text-gray-300"
+                                    th:text="'@'+${post.user.username}"></h2>
+                            </div>
+                        </div>
+    
+                        <div>
+                            <p class="text-sm text-gray-700" th:text="${#dates.format(post.createdAt, 'd MMM yyyy')}"></p>
+                        </div>
+                    </nav>
+
+                    <!-- CONTENT -->
+                    <div class="mb-4">
+                        <p th:text="${comment.content}"></p>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <a th:href="@{/comment/delete/{id} (id=${comment.id})}" class="text-gray-700 uppercase font-bold">
+                            eliminar
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </main>
+
+    </div>
+    
+</body>
+</html>

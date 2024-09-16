@@ -1,0 +1,28 @@
+<div th:fragment="header" 
+    class="fixed w-full bg-slate-900 p-4 shadow-md">
+
+    <div class="md:w-3/5 mx-auto flex justify-between items-center">
+
+        <a href="/profile">
+            <nav class="flex items-center">
+                <div class="w-10 h-10 rounded-full overflow-hidden mr-4">
+                    <img class="object-cover h-full w-full"
+                        th:src="${user.photo != null ? '/photos/' + user.photo : '/logos/profile-po.png'}"
+                        alt="Foto de perfil">
+                </div>
+    
+                <div>
+                    <p class="text-xl font-bold" th:text="${user.name} + ' ' + ${user.lastname}"></p>
+                    <h2 class="text-sm text-gray-300" th:text="'@'+${user.username}"></h2>
+                </div>
+            </nav>
+        </a>
+    
+        <a href="/">
+            <div class="w-10">
+                <img th:src="@{/logos/x-logo.svg}" alt="Logo X">
+            </div>
+        </a>
+        
+    </div>
+</div>

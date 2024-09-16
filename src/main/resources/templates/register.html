@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/main.css}" rel="stylesheet">
+    <link rel="shortcut icon" href="/x-logo_dark.svg" type="image/x-icon">  
+
+    <title>Register</title>
+</head>
+<body class="bg-slate-950 text-white">  
+
+    <div class="min-h-screen flex flex-col justify-center w-4/5 md:w-3/5 lg:w-2/5 mx-auto">
+        <div class="w-10 md:w-14 flex flex-col items-center mx-auto mt-4">
+            <a href="/">
+                <img th:src="@{/logos/x-logo.svg}" alt="Logo X">
+                <p class="uppercase">clone</p>
+            </a>
+        </div>
+        
+        <form class="mb-6 space-y-6" th:action="@{/register}" method="post" th:object="${user}">
+            
+            <div class="flex flex-col">
+                <label class="uppercase" for="email">Nombre</label>
+                <input class="p-2 text-black rounded" type="text" th:field="*{name}" placeholder="nombre" name="name">
+                <p class="text-red-600 mt-1" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+            </div>
+            
+            <div class="flex flex-col">
+                <label class="uppercase" for="email">Apellido</label>
+                <input class="p-2 text-black rounded" type="text" th:field="*{lastname}" placeholder="apellido" name="lastname">
+                <p class="text-red-600 mt-1" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></p>
+            </div>
+
+            <div class="flex flex-col">
+                <label class="uppercase" for="email">Usuario</label>
+                <input class="p-2 text-black rounded" type="text" th:field="*{username}" placeholder="usuario" name="username">
+                <p class="text-red-600 mt-1" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+            </div>
+
+
+            <div class="flex flex-col">
+                <label class="uppercase" for="email">E-mail</label>
+                <input class="p-2 text-black rounded" type="email" th:field="*{email}" placeholder="email@mail.com" name="email">
+                <p class="text-red-600 mt-1" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+            </div>
+
+            <div class="flex flex-col mb-4">
+                <label class="uppercase" for="password">Password</label>
+                <input class="p-2 text-black rounded" type="password" th:field="*{password}" placeholder="password" name="password">
+                <p class="text-red-600 mt-1" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+            </div>
+
+            <div class="flex justify-center">
+                <input class="bg-blue-600 hover:bg-blue-700 cursor-pointer p-2 rounded uppercase font-bold" 
+                    type="submit" 
+                    value="registrarse">
+            </div>
+        </form>
+        
+    </div>
+</body>
+</html>
